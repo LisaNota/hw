@@ -1,0 +1,111 @@
+#include <stdio.h>
+#include <malloc.h>
+
+// Один узел
+struct list {
+    int field; // поле данных
+    struct lest *next; //указатель на следующий элемент
+    struct list *prev; //указатель на предыдущий элемент
+};
+
+// Инициализация
+
+struct list *(init(int a)) // а - значение первого узла
+{
+    struct list *lst;
+    // Выделение памяти под корень списка
+    lst = (struct list *) malloc(sizeof(struct list));
+    lst->field = a;
+    lst->next = NULL; // указатель на следующий узел
+    lst->prev = NULL; // указатель на предыдущий узел
+    return lst;
+}
+
+// Добавление узла
+
+// Принимает на вход два аргумента: указатель на узел, после которого добавляем новый узел, и данные для этого узла
+
+struct list *addelem(struct list *lst, int number) {
+    struct list *temp, *p;
+    temp = (struct list *) malloc(sizeof(struct list));
+    p = lst->next; // Сохранение узла на следующий узел
+    lst->next = temp; // Предыдущий узел указывает на создаваемый
+    temp->field = number; // Сохранение поля данных добавляемого узла
+    temp->next = p; // Созданный узел указывает на следующий узел
+    temp->prev = lst; // Созданный узел указывает на предыдущий узел
+    if (p != NULL)
+        p->prev = temp;
+    return (temp);  // Адрес добавляемого узла
+}
+
+//Удаление узла
+
+//Принимает на вход указатель на удаляемый узел
+
+struct list *deleteelem(struct list *lst) {
+    struct list *prev, *next;
+    prev = lst->prev;
+    next = lst->next;
+    // Переставляем указатели
+    if (prev != NULL)
+        prev->next = next;
+    if (next != NULL)
+        next->prev = prev;
+    free(lst); // Освобождаем память удаляемого узла
+    return prev;
+}
+
+// Вывод элементов через next;
+
+void listprint(struct list *lst) {
+    struct list *p;
+    p = lst;
+    do {
+        printf("%d ", p->field);
+        p = p->next;  // Переход к следующему узлу
+    } while (p != NULL); // Пока существует адрес на следующий узел
+}
+
+// Вывод элементов через prev;
+
+void listprintreversed(struct list *lst)
+{
+    struct list *p;
+    p = lst;
+    while (p->next != NULL)
+        p = p->next;  // Переход к концу списка
+    do {
+        printf("%d ", p->field);
+        p = p->prev; // Переход к предыдущему узлу
+    } while (p != NULL);
+}
+
+void main() {
+    struct list* head = 0, * head1 = 0;
+    int a, n;
+    struct  list* p1 = 0;
+    struct  list* p2 = 0;
+    printf("Количество элементов в списке: ");
+    scanf("%d", &n);
+
+    // Создание списка
+    for (int i = 0; i < n; i++)
+    {
+        printf("Введите элемент:");
+        scanf("%d", &a);
+        if (i == 0)
+        {
+            head = p1 = init(a);
+            head1 = init(a);
+            head = p1;
+        }
+        else
+            p1 = addelem(p1, a);
+    }
+    // Вывод списка
+    listprint(head);
+    printf("\n");
+    listprintreversed(head);
+    free(p1);
+    free(p2);
+}
