@@ -81,10 +81,9 @@ void listprintreversed(struct list *lst)
 }
 
 void main() {
-    struct list* head = 0, * head1 = 0;
+    struct list* head = 0;
     int a, n;
     struct  list* p1 = 0;
-    struct  list* p2 = 0;
     printf("Количество элементов в списке: ");
     scanf("%d", &n);
 
@@ -94,11 +93,7 @@ void main() {
         printf("Введите элемент:");
         scanf("%d", &a);
         if (i == 0)
-        {
             head = p1 = init(a);
-            head1 = init(a);
-            head = p1;
-        }
         else
             p1 = addelem(p1, a);
     }
@@ -107,5 +102,4 @@ void main() {
     printf("\n");
     listprintreversed(head);
     free(p1);
-    free(p2);
 }
